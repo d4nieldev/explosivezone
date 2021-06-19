@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}ExplosiveArea | בית {% endblock %}
 {% block content %}
-<h1 class="excercise-title">כותרת התרגיל</h1>
+<h1 id="exercise-title">כותרת התרגיל</h1>
 <div class="ratio ratio-16x9 p-1">
-    <iframe src="https://www.youtube.com/embed/y-y6i5FPzrw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="yt-video" src="https://www.youtube.com/embed/y-y6i5FPzrw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-<div class="exercise-content">
+<div id="exercise-content">
     <ul>
         <li>תרגיל 1</li>
         <li>תרגיל 2</li>
@@ -13,7 +13,34 @@
     </ul>
 </div>
 <h4>הערות</h4>
-<div class="exercise-remarks">
+<div id="exercise-remarks">
     תרגיל נוסף לשיפור - תרגיל 4
 </div>
+
+<script>
+    $(document).ready(function(){
+        $("button.exercise").on("click", function(){
+            $.ajax({
+                url: '/show_exercise',
+                method: 'POST',
+                data: {
+                    exercise_title: $(this).data('sendto'),
+                },
+                success: function(data){
+                    $("#exercise-title").html(data.title);
+
+                    $("#yt-video").attr("src", data.youtube_link);
+
+                    exercises_html = "";
+                    data.exercise_list.forEach(exercise => {
+                        exercises_html += "<li>" + exercise + "</li>"
+                    });
+                    $("#exercise-content>ul").html(exercises_html);
+
+                    $("#exercise-remarks").html(data.remarks);
+                }
+            })
+        });
+    });
+</script>
 {% endblock %}

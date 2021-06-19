@@ -54,7 +54,7 @@ class MenuOption(models.Model):
             )
         return str(
             HtmlTag('li', 
-            content=HtmlTag('a', {'href': '{% url ' + title + ' %}'}, self.title))
+            content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title))
             )
     
 
@@ -63,3 +63,21 @@ class MenuOption(models.Model):
             return str(self.pk) + ":" + self.parent.title + '>' + self.title
         else:
             return str(self.pk) + ":" + self.title
+
+class Exercise(models.Model):
+    title = models.CharField(max_length=30, unique=True)
+    youtube_code = models.CharField(max_length=150)
+    excercises = models.TextField()
+    remarks = models.TextField()
+
+    def get_youtube_embed(self):
+        return "https://www.youtube.com/embed/" + self.youtube_code
+
+    def get_exercise_list(self):
+        lst = str(self.excercises).splitlines()
+        lst = [s for s in lst if s != ""]
+            
+        return lst
+
+    def __str__(self):
+        return self.title
