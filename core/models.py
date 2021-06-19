@@ -32,27 +32,29 @@ class MenuOption(models.Model):
     def get_html(self):
         children = self.get_children()
         children_html = ''.join([child.get_html() for child in children])
+        title = str(self.title).replace(' ', '')
         
         if len(children):
-            a_attrs = {
-                'href': f'#{self.title}Submenu', 
+            button_attrs = {
+                'data-bs-target': f'#{title}Submenu', 
+                'type': 'button',
                 'data-bs-toggle': 'collapse', 
                 'aria-expanded': 'false', 
                 'class': 'dropdown-toggle',
             }
             ul_attrs = {
-                'class': 'collapse lisst-unstyled',
-                'id': f'{self.title}Submenu',
+                'class': 'collapse list-unstyled',
+                'id': f'{title}Submenu',
             }
 
             return str(
             HtmlTag('li', 
-            content=str(HtmlTag('a', a_attrs, self.title)) +
+            content=str(HtmlTag('button', button_attrs, self.title)) +
             str(HtmlTag('ul', ul_attrs, content=children_html)))
             )
         return str(
             HtmlTag('li', 
-            content=HtmlTag('a', {'href': '{% url ' + str(self.title).lower() + ' %}'}, self.title))
+            content=HtmlTag('a', {'href': '{% url ' + title + ' %}'}, self.title))
             )
     
 
