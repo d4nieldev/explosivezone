@@ -56,7 +56,7 @@ def create_menu_option(request):
 
     MenuOption(parent=parent, title=title).save()
 
-    return HttpResponse('success!')
+    return redirect('index')
 
 def logout_user(request):
     logout(request)

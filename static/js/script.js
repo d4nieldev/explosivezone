@@ -1,13 +1,14 @@
 $(document).ready(function(){
+    $("#sidebar ul").append("<li><a class='add-option d-none'>הוספה</a></li>");
+    
     if ($("#is_admin").html() == "True"){
         $("a.add-page").removeClass('d-none');
+        $("a.add-option").removeClass('d-none');
     }
     else{
         $("a.add-page").addClass('d-none');
+        $("a.add-option").addClass('d-none');
     }
-
-    $("#sidebar ul").append("<li><a class='add-option'>הוספה</a></li>");
-    
 
     $("button.exercise").on("click", function(){
         $.ajax({
