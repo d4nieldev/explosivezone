@@ -5,6 +5,7 @@ $(document).ready(function(){
     else{
         $("a.add-page").addClass('d-none');
     }
+    
     $("button.exercise").on("click", function(){
         $.ajax({
             url: '/show_exercise',
