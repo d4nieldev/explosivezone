@@ -36,7 +36,7 @@ class MenuOption(models.Model):
         children_html = ''.join([child.get_html() for child in children])
         title = str(self.title).replace(' ', '')
         base_html = HtmlTag(
-            'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title)
+            'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title)
         )
         
         if len(children):
@@ -79,14 +79,14 @@ class MenuOption(models.Model):
 class Exercise(models.Model):
     menu_option = models.ForeignKey(MenuOption, on_delete=models.CASCADE)
     youtube_code = models.CharField(max_length=150)
-    excercises = models.TextField()
+    exercises = models.TextField()
     remarks = models.TextField()
 
     def get_youtube_embed(self):
         return "https://www.youtube.com/embed/" + self.youtube_code
 
     def get_exercise_list(self):
-        lst = str(self.excercises).splitlines()
+        lst = str(self.exercises).splitlines()
         lst = [s for s in lst if s != ""]
             
         return lst

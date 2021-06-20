@@ -12,4 +12,14 @@
     <h4 id="remarks-h4">הערות</h4>
     <div id="exercise-remarks"></div>
 </div>
+<div id="exercise-template-container" class="d-none">
+    <h1 id="template-title"></h1>
+    <form id="exercise-template" method="POST">
+        {% csrf_token %}
+        <input id="txt-youtube-code" placeholder="קוד יוטיוב" type="text" maxlength="11" class="form-control mb-2" style="width: 11rem;" />
+        <textarea id="txt-excercises" placeholder="תרגילים מופרדים באמצעות שורות" rows="10" class="form-control mb-2"></textarea>
+        <textarea id='txt-remarks' placeholder="הערות" rows="5" class="form-control mb-2"></textarea>
+        <button type="submit" class="btn btn-secondary">יצירת דף</button>
+    </form>
+</div>  
 {% endblock %}

@@ -5,7 +5,10 @@ $(document).ready(function(){
     else{
         $("a.add-page").addClass('d-none');
     }
+
+    $("#sidebar ul").append("<li><a class='add-option'>הוספה</a></li>");
     
+
     $("button.exercise").on("click", function(){
         $.ajax({
             url: '/show_exercise',
@@ -27,17 +30,52 @@ $(document).ready(function(){
                 $("#exercise-remarks").html(data.remarks);
                 $("#exercise-container").removeClass('d-none');
                 $("#homepage-container").addClass('d-none');
+                $("#exercise-template-container").addClass('d-none');
             }
         })
     });
 
     $(".sidebar-header>h3").on("click", function(){
-        $("#exercise-container").addClass('d-none');
         $("#homepage-container").removeClass('d-none');
+        $("#exercise-container").addClass('d-none');
+        $("#exercise-template-container").addClass('d-none');
+    });
+
+    $("a.add-page").on("click", function(){
+        $("#template-title").html($(this).parent('button').text());
+
+        $("#exercise-template-container").removeClass('d-none');
+        $("#homepage-container").addClass('d-none');
+        $("#exercise-container").addClass('d-none');
     });
 
     $("#sidebarCollapse").on('click', function(){
         $("#sidebar").toggleClass('active');
+    });
+
+    $(document).on('dblclick', 'a.add-option', function(){
+        $(this).parent().html("<input id='txt-add-option' type='text' class='bg-transparent form-control text-white' style='font-size: 1.1rem' />");
+        $("#txt-add-option").trigger('focus');
+    });
+    $(document).on('blur', '#txt-add-option', function(){
+        $(this).parent().html("<a class='add-option'>הוספה</a>");
+    });
+    $(document).on('keypress', '#txt-add-option', function(e){
+        if (e.which == 13 && $(this).val().length > 0){
+            element = $(this)
+            $.ajax({
+                method: 'POST',
+                url: '/create_menu_option',
+                data: {
+                    parent_title: $(element).parent('li').parent('ul').parent('li').children('button').text(),
+                    title: $(element).val()
+                },
+                success: function(response){
+                    alert(response);
+                }
+
+            })
+        }
     });
     
     $("#sidebar>.components button").on('click', function(){
@@ -59,4 +97,20 @@ $(document).ready(function(){
         });
         $(this).parent().toggleClass("active");
     });
+
+    $("#exercise-template").on("submit", function(){
+        $.ajax({
+            method: "POST",
+            url: '/create_exercise',
+            data: {
+                title: $("#template-title").html(),
+                youtube_code: $("#txt-youtube-code").val(),
+                exercises: $("#txt-excercises").val(),
+                remarks: $("#txt-remarks").val()
+            }, success: function(response){
+                alert(response);
+            }
+        })
+    });
+    
 });

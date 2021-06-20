@@ -17,6 +17,7 @@ def index(request):
 @csrf_exempt
 def show_exercise(request):
     title = request.POST.get('exercise_title')
+    print(request.POST)
     ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=title))
     obj = {
         'title': ex.menu_option.title,
@@ -26,6 +27,36 @@ def show_exercise(request):
     }
 
     return JsonResponse(obj)
+
+@csrf_exempt
+def create_exercise(request):
+    title = request.POST.get('title')
+    youtube_code = request.POST.get('youtube_code')
+    exercises = request.POST.get('exercises')
+    remarks = request.POST.get('remarks')
+    print(title)
+
+    Exercise(
+        menu_option=MenuOption.objects.get(title=title),
+        youtube_code=youtube_code,
+        exercises=exercises,
+        remarks=remarks,
+    ).save()
+
+    return HttpResponse("success")
+
+@csrf_exempt
+def create_menu_option(request):
+    parent_title = request.POST.get('parent_title')
+    if parent_title == "":
+        parent = None
+    else:
+        parent = MenuOption.objects.get(title=parent_title)
+    title = request.POST.get('title')
+
+    MenuOption(parent=parent, title=title).save()
+
+    return HttpResponse('success!')
 
 def logout_user(request):
     logout(request)
