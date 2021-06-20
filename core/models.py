@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from core.html_builder import HtmlTag
 
 class MenuOption(models.Model):
@@ -33,6 +35,9 @@ class MenuOption(models.Model):
         children = self.get_children()
         children_html = ''.join([child.get_html() for child in children])
         title = str(self.title).replace(' ', '')
+        base_html = HtmlTag(
+            'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title)
+        )
         
         if len(children):
             button_attrs = {
@@ -52,10 +57,17 @@ class MenuOption(models.Model):
             content=str(HtmlTag('button', button_attrs, self.title)) +
             str(HtmlTag('ul', ul_attrs, content=children_html)))
             )
-        return str(
-            HtmlTag('li', 
-            content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title))
+        
+        try:
+            exercise = Exercise.objects.get(menu_option=self)
+        except ObjectDoesNotExist:
+            base_html = HtmlTag(
+            'li', 
+            content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
+                        str(HtmlTag('a', {'class': 'add-page d-none'}, content="<i class='fas fa-plus'></i>"))
+                    )
             )
+        return str(base_html)
     
 
     def __str__(self):
@@ -65,7 +77,7 @@ class MenuOption(models.Model):
             return str(self.pk) + ":" + self.title
 
 class Exercise(models.Model):
-    title = models.CharField(max_length=30, unique=True)
+    menu_option = models.ForeignKey(MenuOption, on_delete=models.CASCADE)
     youtube_code = models.CharField(max_length=150)
     excercises = models.TextField()
     remarks = models.TextField()
@@ -80,4 +92,4 @@ class Exercise(models.Model):
         return lst
 
     def __str__(self):
-        return self.title
+        return self.menu_option.title

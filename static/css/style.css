@@ -1,8 +1,8 @@
 :root {
   --sidebar-width: 25rem;
-  --primary-color: #283655 ;
-  --secondary-color: #4d648d  ;
-  --title-color: #1e1f26;
+  --primary-color: #252525;
+  --secondary-color: #630000;
+  --title-color: #212121;
 }
 
 @font-face {
@@ -50,14 +50,16 @@ a:focus {
   width: fit-content;
   margin: auto;
 }
+#sidebar>.sidebar-header>h3{
+  cursor: pointer;
+}
 #sidebar ul.components {
   width: min(25rem, 100vw);
   position: fixed;
   top: 5.17rem;
   padding: 2rem 0;
-  border-bottom: 1px solid #47748b;
+  border-bottom: 1px solid var(--secondary-color);
 }
-#sidebar ul li a,
 #sidebar ul li button{
   background-color: transparent;
   width: 100%;
@@ -68,26 +70,22 @@ a:focus {
   font-size: 1.1em;
   display: block;
 }
-#sidebar ul li a:hover,
 #sidebar ul li button:hover {
   color: var(--secondary-color);
   background: #fff;
 }
-#sidebar ul li.active > a,
 #sidebar ul li.active > button,
-a[aria-expanded="true"],
 button[aria-expanded="true"] {
   color: #fff;
   background: var(--secondary-color);
+  border-top: 1px dashed var(--primary-color);
 }
-a[data-toggle="collapse"],
 button[data-toggle="collapse"] {
   position: relative;
 }
 .dropdown-toggle::after {
   margin-right: 1rem;
 }
-ul ul a, 
 ul ul button {
   font-size: 0.9em !important;
   padding-right: 3rem !important;
@@ -126,6 +124,22 @@ ul ul button {
 .container-fluid{
   padding: 0;
   overflow-x: hidden;
+}
+
+.add-page{
+  position: absolute;
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: #EEEBDD;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  left: 0;
+  padding: 0.6rem 0.8rem;
+  margin: -0.6rem 0.4rem;
+}
+.add-page:hover{
+  background-color: #841818;
+  color: white;
 }
 
 #content{

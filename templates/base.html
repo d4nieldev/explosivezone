@@ -15,13 +15,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--My style-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <!--My script-->
+    <script src="{% static 'js/script.js' %}"></script>
     <title>{% block title %}ExplosiveArea{% endblock %}</title>
 </head>
 <body>
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>ExplosiveArea</h3>
+                <h3>ExplosiveZone</h3>
             </div>
             <ul class="lisst-unstyled components">
                 {{ menu_data|safe }}
@@ -40,17 +42,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function(){
-            $("#sidebarCollapse").on('click', function(){
-                $("#sidebar").toggleClass('active');
-            });
-            $("button[aria-expanded]").on('click', function(){
-                $(this).parent().toggleClass("active");
-            });
-        });
-    </script>
 
 </body>
 </html>
