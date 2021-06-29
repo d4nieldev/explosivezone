@@ -80,6 +80,7 @@ class MenuOption(models.Model):
             if admin_view:
                 base_html = HtmlTag('li', 
                 content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'data-new':'true', 'class': 'exercise'}, self.title + 
+                str(HtmlTag('a', {'data-del': self.pk, 'class': 'remove-page ms-5'}, "<center><i class='fas fa-trash'></i></center>")) +
                 str(HtmlTag('a', {'class': 'add-page'}, "<i class='fas fa-plus'></i>"))))
             else:
                 base_html = ''

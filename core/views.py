@@ -38,8 +38,6 @@ def BASE_CONTEXT(request):
             if log_user(username, password) == 'user_not_exist':
                 showLogin = True
                 login_error = 'המשתמש לא קיים'
-            else:
-                return log_user(username, password)
         
         elif "submitRegister" in request.POST:
             print('register')
