@@ -1,0 +1,42 @@
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content myModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">הרשמה</h5>
+                <button type="button" class="btn-close btn-close-white ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="input-group">
+                        {{ user_creation_form.last_name }}
+                        {{ user_creation_form.first_name }}
+                    </div>
+                    <div class="input-group" >
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                        {{ user_creation_form.email }}
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                        {{ user_creation_form.username }}
+                    </div>
+                    <div class="input-group">
+                        {{ user_creation_form.password2 }}
+                        {{ user_creation_form.password1 }}
+                    </div>
+                    <div class="d-none">
+                        {{ errors }}
+                    </div>
+                    <ul class="form-validation-errors" id="registerErrors">
+
+                    </ul>
+                </div>
+                <div class="modal-footer d-flex justify-content-start">
+                    <span>יש כבר משתמש? לחצ/י <button type="button" class="btn link-red">כאן</button> כדי להתחבר</span>
+                    <input type="submit" name="submitRegister" class="btn btn-red me-auto" value="הירשם">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

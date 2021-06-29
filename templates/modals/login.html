@@ -1,0 +1,22 @@
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content myModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">התחברות</h5>
+                <button type="button" class="btn-close btn-close-white ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="text" id="loginUsername" name="loginUsername" class="form-control mb-1" placeholder="שם משתמש">
+                    <input type="password" id="loginPassword" name="loginPassword" class="form-control" placeholder="סיסמא">
+                </div>
+                <div class="modal-footer d-flex justify-content-start">
+                    <span>עדיין אין משתמש? לחצ/י <button type="button" class="btn link-red" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">כאן</button> כדי להרשם</span>
+                    <input type="submit" name="submitLogin" class="btn btn-red me-auto" value="התחבר">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -192,3 +192,59 @@ ul ul button {
     margin-right: 0;
   }
 }
+
+.myModal {
+  background-color: var(--primary-color);
+  color: white;
+}
+.myModal>div{
+  border-color: var(--secondary-color);
+}
+
+.btn-red {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.btn-red:hover{
+  background-color: white;
+}
+
+.link-red{
+  color: var(--secondary-color);
+  background-color: none;
+  padding: 0;
+  vertical-align: baseline;
+}
+.link-red:hover{
+  color: #ab0f0f;
+}
+
+.input-group{
+  margin-bottom: 5px;
+  direction: ltr;
+}
+
+.form-validation-errors{
+  color: #ab0f0f;
+  list-style-type: none;
+  padding: 0;
+}
+.form-validation-errors li{
+  background-color: var(--title-color);
+  margin-bottom: 2px;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.user-info {
+  font-family: Tahoma;
+  background-color: var(--primary-color);
+  position: absolute;
+  left: 0;
+  top: 7%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: white 1px;
+  color: white;
+  width: 20rem;
+}

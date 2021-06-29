@@ -19,7 +19,7 @@
     <script src="{% static 'js/script.js' %}"></script>
     <title>{% block title %}ExplosiveArea{% endblock %}</title>
 </head>
-<body>
+<body onload="">
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -31,17 +31,58 @@
         </nav>
 
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg topbar">
+            <nav class="navbar navbar-expand-lg topbar d-flex px-4">
                 <button type="button" id="sidebarCollapse" class="btn-menu">
                     <h3><i class="fas fa-bars"></i></h3>
                 </button>
+                {% if not user.is_authenticated %}
+                <button type="button" id="openLogin" class="btn btn-secondary me-auto" data-bs-toggle="modal" data-bs-target="#loginModal" aria-hidden="true">
+                    התחברות
+                </button>
+                {% else %}
+                <div class="user-info">
+                    <div class="row">
+                        <div class="col-3">
+                            <a href="#"><i class="fas fa-star fa-3x" title='אימונים מועדפים'></i></a>
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                שלום, {{ user.username }}!
+                            </div>
+                            <div class="row"><a href="/logout" class='link-danger'>התנתק</a></div>
+                        </div>
+                    </div>
+                    
+                </div>
+                {% endif %}
+                
             </nav>
             <div id="content">
                 {% block content %}
                 {% endblock %}
             </div>
         </div>
+
+        {% include 'modals/login.html' %}
+
+        {% include 'modals/register.html' %}
     </div>
+
+    {% if showRegister %}
+    <script>
+        $(document).ready(function(){
+            $("#registerModal").modal({ show: false });
+            $("#registerModal").modal('show');
+        });
+    </script>
+    {% elif showLogin %}
+    <script>
+        $(document).ready(function(){
+            $("#loginModal").modal({ show: false });
+            $("#loginModal").modal('show');
+        });
+    </script>
+    {% endif %}
 
 </body>
 </html>
