@@ -136,17 +136,20 @@ ul ul button {
 .add-page{
   position: absolute;
   display: inline-block;
-  background-color: var(--secondary-color);
+  background-color: #0275d8;
   color: #EEEBDD;
   font-weight: 500;
   border-radius: 0.5rem;
   left: 0;
   padding: 0.6rem 0.8rem;
   margin: -0.6rem 0.4rem;
+  transition: 0.3s;
 }
 .add-page:hover{
-  background-color: #841818;
-  color: white;
+  background-color: white;
+  border: solid black 0.5px;
+  color: black;
+  transition: 0.3s;
 }
 
 .add-option{
@@ -298,4 +301,22 @@ ul ul button {
 }
 .fav-box span:last-child{
   bottom: 0;
+}
+
+.remove-page{
+  position: absolute;
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  left: 0;
+  padding: 0.6rem 0.8rem;
+  margin: -0.6rem 0.4rem;
+  transition: ease 0.3s;
+}
+.remove-page:hover{
+  background-color: var(--brighter-red);
+  color: white;
+  transition: ease 0.3s;
 }

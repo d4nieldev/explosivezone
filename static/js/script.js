@@ -19,10 +19,10 @@ $(document).ready(function(){
     // send to relevant page
     $("button.exercise").on("click", function(){
         if ($(this).data('new')){
-            window.location.href = '/אימון חדש/' + $(this).data('sendto') + '/'
+            window.location.href = '/אימון חדש/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
         }
         else{
-            window.location.href = '/' + $(this).data('sendto') + '/'
+            window.location.href = '/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
         }
     });
 
@@ -57,11 +57,11 @@ $(document).ready(function(){
                 success: function(response){
                     alert(response);
                 }
-
             })
         }
     });
 
+    // submit new exercise
     $("#exercise-template").on("submit", function(){
         $.ajax({
             method: "POST",
@@ -78,6 +78,7 @@ $(document).ready(function(){
         })
     });
 
+    // toggle fav icon
     $("#toggle_fav").on("click", function(){
         $.ajax({
             method: 'POST',
@@ -86,12 +87,33 @@ $(document).ready(function(){
                 title: $("#exercise-title").text().trim()
             }, 
             success: function(){
-                // star color change
+                // title star color change
                 $("#toggle_fav").find('svg').toggleClass('text-secondary');
                 $("#toggle_fav").find('svg').toggleClass('text-warning');
 
-                // star disappear from menu
+                // star show / hide from menu
                 $("button.exercise[data-sendto='" + $("#exercise-title").text().trim() + "']").find('svg').toggleClass("d-none")
+            }
+        })
+    });
+
+    // zero modal content on modal close
+    $(".modal button.btn-close").on("click", function(){
+        $(this).parent().parent().find("form").find("input[type='text'], input[type='password'], input[type='email']").val("");
+    })
+
+    $("a[data-del]").on("click", function(e){
+        e.stopPropagation();
+        menuOptionId = $(this).data('del');
+        $(this).parent().remove()
+        $.ajax({
+            method: 'POST',
+            url: '/discard_page',
+            data: {
+                id: menuOptionId
+            },
+            success: function(response){
+                console.log(response)
             }
         })
     });

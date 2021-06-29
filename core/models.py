@@ -38,10 +38,11 @@ class MenuOption(models.Model):
         title = str(self.title).replace(' ', '_')
 
         is_fav = False
-        for fav in user_favs:
-            if fav.exercise.menu_option.title == self.title:
-                is_fav = True
-                break
+        if user_favs:
+            for fav in user_favs:
+                if fav.exercise.menu_option.title == self.title:
+                    is_fav = True
+                    break
 
         if is_fav:
             base_html = HtmlTag(
@@ -77,14 +78,17 @@ class MenuOption(models.Model):
             exercise = Exercise.objects.get(menu_option=self)
         except ObjectDoesNotExist:
             if admin_view:
-                base_html = HtmlTag(
-                'li', 
+                base_html = HtmlTag('li', 
                 content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'data-new':'true', 'class': 'exercise'}, self.title + 
-                            str(HtmlTag('a', {'class': 'add-page'}, content="<i class='fas fa-plus'></i>"))
-                        )
-                )
+                str(HtmlTag('a', {'class': 'add-page'}, "<i class='fas fa-plus'></i>"))))
             else:
                 base_html = ''
+        else:
+            if admin_view:
+                base_html = HtmlTag('li', 
+                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
+                str(HtmlTag('a', {'data-del': self.pk, 'class': 'remove-page'}, "<center><i class='fas fa-trash'></i></center>"))))
+            
         return str(base_html)
     
 

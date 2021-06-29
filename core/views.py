@@ -3,9 +3,10 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import AnonymousUser
 
 from core.forms import UserForm
 
@@ -13,8 +14,12 @@ from core.models import MenuOption, Exercise, Favorite
 
 
 def BASE_CONTEXT(request):
+    if not isinstance(request.user, AnonymousUser):
+        user_favs = Favorite.objects.filter(user=request.user)
+    else: 
+        user_favs = None
     return dict({
-        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser, Favorite.objects.filter(user=request.user))),
+        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser, user_favs)),
         'is_admin': request.user.is_superuser,
         'debug': settings.DEBUG,
     })
@@ -80,7 +85,8 @@ def show_exercise(request, exercise_title):
     exercise_list = [s for s in str(ex.exercises).splitlines()]
 
     try:
-        Favorite.objects.get(user=request.user, exercise=ex)
+        if not isinstance(request.user, AnonymousUser):
+            Favorite.objects.get(user=request.user, exercise=ex)
     except ObjectDoesNotExist:
         is_user_fav = False
     else:
@@ -95,6 +101,7 @@ def show_exercise(request, exercise_title):
 
     return render(request, 'exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
+@user_passes_test(lambda u: u.is_superuser)
 @csrf_exempt
 def create_exercise(request, exercise_title):
     exercise_title = exercise_title.replace('_', ' ')
@@ -119,6 +126,7 @@ def create_exercise(request, exercise_title):
     
     return render(request, 'add_exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
+@user_passes_test(lambda u: u.is_superuser)
 @csrf_exempt
 def create_menu_option(request):
     parent_title = request.POST.get('parent_title')
@@ -156,3 +164,8 @@ def fav(request):
     else:
         fav_obj.delete()
         return HttpResponse('UNFAV [' + exercise_title + ']')
+    
+@csrf_exempt
+def discard_page(request):
+    MenuOption.objects.get(id=request.POST['id']).delete()
+    return HttpResponse('page discarded successfully')
