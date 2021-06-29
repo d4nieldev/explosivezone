@@ -3,6 +3,7 @@
   --primary-color: #252525;
   --secondary-color: #630000;
   --title-color: #212121;
+  --brighter-red: #ab0f0f;
 }
 
 @font-face {
@@ -69,6 +70,12 @@ a:focus {
   padding: 1rem;
   font-size: 1.1em;
   display: block;
+  position: relative;
+}
+#sidebar ul li button svg.fa-star{
+  position: absolute;
+  left: 0.4rem;
+  margin-top: -0.3rem;
 }
 #sidebar ul li button:hover {
   color: var(--secondary-color);
@@ -156,8 +163,7 @@ ul ul button {
   margin: auto;
 }
 
-#exercise-title,
-#template-title{
+.title{
   text-align: center;
   font-family: ValeraRound;
   color: var(--primary-color);
@@ -216,7 +222,7 @@ ul ul button {
   vertical-align: baseline;
 }
 .link-red:hover{
-  color: #ab0f0f;
+  color: var(--brighter-red);
 }
 
 .input-group{
@@ -225,7 +231,7 @@ ul ul button {
 }
 
 .form-validation-errors{
-  color: #ab0f0f;
+  color: var(--brighter-red);
   list-style-type: none;
   padding: 0;
 }
@@ -251,4 +257,45 @@ ul ul button {
 
 .text-red{
   color: var(--secondary-color);
+}
+
+.btn:focus{
+  outline: none;
+  box-shadow: none;
+}
+.fav-box{
+  position: relative;
+  border: 1px solid black;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  padding: 1.5rem;
+  height: 100%;
+  font-family: Tahoma;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  text-align: center;
+  font-family: ValeraRound;
+}
+.fav-box p{
+  margin: 0;
+  padding: 0.5rem 0rem;
+}
+.fav-box:hover{
+  background-color: var(--primary-color);
+  color: var(--brighter-red);
+}
+.fav-box span{
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  right: 0;
+  color: var(--secondary-color);
+}
+.fav-box span:first-child{
+  top: 0;
+}
+.fav-box span:last-child{
+  bottom: 0;
 }

@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}ExplosiveArea | אימונים מועדפים {% endblock %}
 {% block content %}
-You're logged in!
+<h1 class="title">אימונים מועדפים</h1>
+<div class="row">
+    {% for fav in user_favs %}
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mb-2">
+            <a href="/{{ fav.exercise.menu_option.title }}" class="fav-box">
+                <span>★</span>
+                <p>{{ fav.exercise }}</p>
+                <span>★</span>
+            </a>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

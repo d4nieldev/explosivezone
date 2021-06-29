@@ -71,8 +71,27 @@ $(document).ready(function(){
                 youtube_code: $("#txt-youtube-code").val(),
                 exercises: $("#txt-excercises").val(),
                 remarks: $("#txt-remarks").val()
-            }, success: function(response){
+            }, 
+            success: function(response){
                 alert(response);
+            }
+        })
+    });
+
+    $("#toggle_fav").on("click", function(){
+        $.ajax({
+            method: 'POST',
+            url: '/fav',
+            data: {
+                title: $("#exercise-title").text().trim()
+            }, 
+            success: function(){
+                // star color change
+                $("#toggle_fav").find('svg').toggleClass('text-secondary');
+                $("#toggle_fav").find('svg').toggleClass('text-warning');
+
+                // star disappear from menu
+                $("button.exercise[data-sendto='" + $("#exercise-title").text().trim() + "']").find('svg').toggleClass("d-none")
             }
         })
     });

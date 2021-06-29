@@ -9,5 +9,6 @@ urlpatterns = [
     path('אימון חדש/<str:exercise_title>/', views.create_exercise, name='create_exercise'),
     path('create_menu_option', views.create_menu_option, name='create_menu_option'),
     path('logout', views.logout_user, name='logout'),
+    path('fav', views.fav, name='fav')
     
 ]

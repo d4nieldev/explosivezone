@@ -2,9 +2,19 @@
 {% block title %}ExplosiveArea | {{ exercise.menu_option.title }} {% endblock %}
 {% block content %}
 <!--Exercise Container-->
+<script>
+    console.log("{{ is_user_fav }}");
+</script>
 <div id="exercise-container">
-    <h1 id="exercise-title">
+    <h1 id="exercise-title" class="title">
         {{ exercise.menu_option.title }}
+        <button id="toggle_fav" type="button" class="btn p-0">
+            {% if is_user_fav %}
+            <i class="fas fa-star fa-2x text-warning"></i>
+            {% else %}
+            <i class="fas fa-star fa-2x text-secondary"></i>
+            {% endif %}
+        </button>
     </h1>
     <div id="exercise-content">
         <ul>

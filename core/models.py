@@ -10,13 +10,13 @@ class MenuOption(models.Model):
     title = models.CharField(max_length=50, unique=True)
 
     @staticmethod
-    def get_root_options_html(admin_view):
+    def get_root_options_html(admin_view, user_favs):
         all_options = MenuOption.objects.all()
         root_options_html = ""
 
         for opt in all_options:
             if not opt.parent:
-                root_options_html += opt.get_html(admin_view)
+                root_options_html += opt.get_html(admin_view, user_favs)
         
         return root_options_html
 
@@ -32,13 +32,27 @@ class MenuOption(models.Model):
         return children
     
 
-    def get_html(self, admin_view):
+    def get_html(self, admin_view, user_favs):
         children = self.get_children()
-        children_html = ''.join([child.get_html(admin_view) for child in children])
+        children_html = ''.join([child.get_html(admin_view, user_favs) for child in children])
         title = str(self.title).replace(' ', '_')
-        base_html = HtmlTag(
-            'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title)
-        )
+
+        is_fav = False
+        for fav in user_favs:
+            if fav.exercise.menu_option.title == self.title:
+                is_fav = True
+                break
+
+        if is_fav:
+            base_html = HtmlTag(
+                'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title + 
+                str(HtmlTag('i', attributes={"class": "fas fa-star text-warning fa-2x"})))
+            )
+        else:
+            base_html = HtmlTag(
+                'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title + 
+                str(HtmlTag('i', attributes={"class": "fas fa-star text-warning fa-2x d-none"})))
+            )
         
         if len(children):
             button_attrs = {

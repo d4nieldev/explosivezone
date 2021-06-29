@@ -5,15 +5,16 @@ from django.core import serializers
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from core.forms import UserForm
 
-from core.models import MenuOption, Exercise
+from core.models import MenuOption, Exercise, Favorite
 
 
 def BASE_CONTEXT(request):
     return dict({
-        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser)),
+        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser, Favorite.objects.filter(user=request.user))),
         'is_admin': request.user.is_superuser,
         'debug': settings.DEBUG,
     })
@@ -78,9 +79,18 @@ def show_exercise(request, exercise_title):
     ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
     exercise_list = [s for s in str(ex.exercises).splitlines()]
 
+    try:
+        Favorite.objects.get(user=request.user, exercise=ex)
+    except ObjectDoesNotExist:
+        is_user_fav = False
+    else:
+        is_user_fav = True
+
+
     context = {
         "exercise": ex,
-        "exercise_list": exercise_list
+        "exercise_list": exercise_list,
+        "is_user_fav": is_user_fav
     }
 
     return render(request, 'exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
@@ -130,6 +140,19 @@ def logout_user(request):
 @login_required(login_url='index')
 def favorites(request):
     context = {
-
+        'user_favs': Favorite.objects.filter(user=request.user)
     }
-    return render(request, 'favorites.html', BASE_CONTEXT(request))
+    return render(request, 'favorites.html', concatenate_dicts(context, BASE_CONTEXT(request)))
+
+@csrf_exempt
+def fav(request):
+    exercise_title = request.POST['title']
+    ex_obj = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
+    try:
+        fav_obj = Favorite.objects.get(user=request.user, exercise=ex_obj)
+    except ObjectDoesNotExist:
+        Favorite(user=request.user, exercise=ex_obj).save()
+        return HttpResponse('FAV[' + exercise_title + ']')
+    else:
+        fav_obj.delete()
+        return HttpResponse('UNFAV [' + exercise_title + ']')
