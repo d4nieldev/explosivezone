@@ -14,23 +14,6 @@ from core.models import MenuOption, Exercise, Favorite
 
 
 def BASE_CONTEXT(request):
-    if not isinstance(request.user, AnonymousUser):
-        user_favs = Favorite.objects.filter(user=request.user)
-    else: 
-        user_favs = None
-    return dict({
-        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser, user_favs)),
-        'is_admin': request.user.is_superuser,
-        'debug': settings.DEBUG,
-    })
-
-def concatenate_dicts(dict1, dict2):
-    for key, value in dict2.items():
-        dict1[key] = value
-    
-    return dict1
-
-def index(request):
     def log_user(username, password):
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -38,21 +21,25 @@ def index(request):
             return redirect('favorites')
         else:
             # user does not exist
-            pass
-    
+            return 'user_not_exist'
+
     errors = ''
     form = UserForm()
     showLogin = False
-    showRegister = False
+    showRegister = False    
+    login_error = ''
 
     if request.method == "POST":
         if "submitLogin" in request.POST:
-            print('login')
             username = request.POST['loginUsername']
             password = request.POST['loginPassword']
             print(username, password)
 
-            log_user(username, password)
+            if log_user(username, password) == 'user_not_exist':
+                showLogin = True
+                login_error = 'המשתמש לא קיים'
+            else:
+                return log_user(username, password)
         
         elif "submitRegister" in request.POST:
             print('register')
@@ -69,14 +56,30 @@ def index(request):
                 errors = form.errors
                 showRegister = True
 
-    context = {
+    if not isinstance(request.user, AnonymousUser):
+        user_favs = Favorite.objects.filter(user=request.user)
+    else: 
+        user_favs = None
+
+    return dict({
         'user_creation_form': form,
         'errors': errors,
         'showLogin': showLogin,
-        'showRegister': showRegister
-    }
+        'showRegister': showRegister,
+        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser, user_favs)),
+        'is_admin': request.user.is_superuser,
+        'debug': settings.DEBUG,
+        'login_error': login_error
+    })
 
-    return render(request, 'index.html', concatenate_dicts(context, BASE_CONTEXT(request)))
+def concatenate_dicts(dict1, dict2):
+    for key, value in dict2.items():
+        dict1[key] = value
+    
+    return dict1
+
+def index(request):
+    return render(request, 'index.html', BASE_CONTEXT(request))
 
 @csrf_exempt
 def show_exercise(request, exercise_title):
