@@ -1,0 +1,22 @@
+<!-- Add Option Modal -->
+<div class="modal fade" id="addOptionModal" tabindex="-1" aria-labelledby="addOptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content myModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addOptionModalLabel">הוסף אופציה</h5>
+                <button type="button" class="btn-close btn-close-white ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+            {% csrf_token %}
+                <div class="modal-body">
+                    בחר מיקום הוספת האופציה:
+                    {{ menu_option_form.parent }}
+                    {{ menu_option_form.title }}
+                </div>
+                <div class="modal-footer d-flex justify-content-start">
+                    <input type="submit" name="submitAddOption" class="btn btn-red me-auto" value="הוסף אפשרות">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+from core.models import MenuOption
+
 
 class UserForm(UserCreationForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'שם פרטי', 'style': 'direction:rtl'}))
@@ -14,3 +16,12 @@ class UserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name','last_name', 'username', 'email', 'password1' ,'password2' )
+
+class MenuOptionForm(forms.ModelForm):
+    class Meta:
+        model = MenuOption
+        fields = ('parent', 'title')
+        widgets = {
+            'parent': forms.Select(attrs={'class': 'form-control mb-1'}, choices=[(m, m) for m in MenuOption.objects.all()]),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'כותרת'})
+        }

@@ -45,59 +45,72 @@ class MenuOption(models.Model):
                     break
 
         if is_fav:
-            base_html = HtmlTag(
-                'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title + 
-                str(HtmlTag('i', attributes={"class": "fas fa-star text-warning fa-2x"})))
-            )
+            base_html = f"""
+            <li>
+                <button type='button' data-sendto='{self.title} class='exercise'>
+                    {self.title}<i class='fas fa-star text-warning fa-2x></i>
+                </button>
+            </li>
+            """
         else:
-            base_html = HtmlTag(
-                'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title + 
-                str(HtmlTag('i', attributes={"class": "fas fa-star text-warning fa-2x d-none"})))
-            )
+            base_html = f"""
+            <li>
+                <button type='button' data-sendto='{self.title} class='exercise'>
+                    {self.title}<i class='fas fa-star text-warning fa-2x d-none'></i>
+                </button>
+            </li>
+            """
         
         if len(children):
-            button_attrs = {
-                'data-bs-target': f'#{title}Submenu', 
-                'type': 'button',
-                'data-bs-toggle': 'collapse', 
-                'aria-expanded': 'false', 
-                'class': 'dropdown-toggle',
-            }
-            ul_attrs = {
-                'class': 'collapse list-unstyled',
-                'id': f'{title}Submenu',
-            }
-
-            return str(
-            HtmlTag('li', 
-            content=str(HtmlTag('button', button_attrs, self.title)) +
-            str(HtmlTag('ul', ul_attrs, content=children_html)))
-            )
+            return f"""
+            <li>
+                <button data-bs-target='#{title}Submenu' type='button' data-bs-toggle='collapse' aria-expanded='false' class='dropdown-toggle'>{self.title}</button>
+                <ul class='collapse list-unstyled' id='{title}Submenu'>
+                    {children_html}
+                </ul>
+            </li>
+            """
         
         try:
             exercise = Exercise.objects.get(menu_option=self)
         except ObjectDoesNotExist:
             if admin_view:
-                base_html = HtmlTag('li', 
-                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'data-new':'true', 'class': 'exercise'}, self.title + 
-                str(HtmlTag('a', {'data-del': self.pk, 'class': 'remove-page ms-5'}, "<center><i class='fas fa-trash'></i></center>")) +
-                str(HtmlTag('a', {'class': 'add-page'}, "<i class='fas fa-plus'></i>"))))
-            else:
-                base_html = ''
+                base_html = f"""
+                <li>
+                    <button type='button' data-sendto='{title}' data-new='true' class='exercise'>
+                        {self.title}
+                    </button>
+                    <a data-del='{self.pk}' class='remove-page ms-5'>
+                        <center><i class='fas fa-trash'></i></center>
+                    </a>
+                    <a class='add-page'>
+                        <i class='fas fa-plus'></i>
+                    </a>
+                    
+                </li>
+                """
         else:
             if admin_view:
-                base_html = HtmlTag('li', 
-                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
-                str(HtmlTag('a', {'data-del': self.pk, 'class': 'remove-page'}, "<center><i class='fas fa-trash'></i></center>"))))
+                base_html = f"""
+                <li>
+                    <button type='button' data-sendto='{title}' class='exercise'>
+                        {self.title}
+                    </button>
+                    <a data-del='{self.pk}' class='remove-page'>
+                        <center><i class='fas fa-trash'></i></center>
+                    </a>
+                    
+                </li>
+                """
             
-        return str(base_html)
+        return base_html
     
 
     def __str__(self):
         if self.parent:
-            return str(self.pk) + ":" + self.parent.title + '>' + self.title
+            return str(self.parent) + '>' + self.title
         else:
-            return str(self.pk) + ":" + self.title
+            return self.title
 
 class Exercise(models.Model):
     menu_option = models.ForeignKey(MenuOption, on_delete=models.CASCADE)

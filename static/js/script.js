@@ -37,28 +37,8 @@ $(document).ready(function(){
 
 
     // Adding options
-    $(document).on('dblclick', 'a.add-option', function(){
-        $(this).parent().html("<input id='txt-add-option' type='text' class='bg-transparent form-control text-white' style='font-size: 1.1rem' />");
-        $("#txt-add-option").trigger('focus');
-    });
-    $(document).on('blur', '#txt-add-option', function(){
-        $(this).parent().html("<a class='add-option'>הוספה</a>");
-    });
-    $(document).on('keypress', '#txt-add-option', function(e){
-        if (e.which == 13 && $(this).val().length > 0){
-            element = $(this)
-            $.ajax({
-                method: 'POST',
-                url: '/create_menu_option',
-                data: {
-                    parent_title: $(element).parent('li').parent('ul').parent('li').children('button').text(),
-                    title: $(element).val()
-                },
-                success: function(response){
-                    alert(response);
-                }
-            })
-        }
+    $("#add-options").on('dblclick', function(){
+        console.log("clicked add");
     });
 
     // submit new exercise
@@ -117,5 +97,7 @@ $(document).ready(function(){
             }
         })
     });
+
+    
     
 });

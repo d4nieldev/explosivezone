@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AnonymousUser
 
-from core.forms import UserForm
+from core.forms import UserForm, MenuOptionForm
 
 from core.models import MenuOption, Exercise, Favorite
 
@@ -40,7 +40,6 @@ def BASE_CONTEXT(request):
                 login_error = 'המשתמש לא קיים'
         
         elif "submitRegister" in request.POST:
-            print('register')
             form = UserForm(request.POST)
             if form.is_valid():
                 form.save()
@@ -53,6 +52,11 @@ def BASE_CONTEXT(request):
             else:
                 errors = form.errors
                 showRegister = True
+        
+        elif "submitAddOption" in request.POST:
+            menu_option_form = MenuOptionForm(request.POST)
+            if menu_option_form.is_valid():
+                menu_option_form.save()
 
     if not isinstance(request.user, AnonymousUser):
         user_favs = Favorite.objects.filter(user=request.user)
@@ -61,6 +65,7 @@ def BASE_CONTEXT(request):
 
     return dict({
         'user_creation_form': form,
+        'menu_option_form': MenuOptionForm(),
         'errors': errors,
         'showLogin': showLogin,
         'showRegister': showRegister,
@@ -139,7 +144,7 @@ def create_menu_option(request):
 
     MenuOption(parent=parent, title=title).save()
 
-    return redirect('index')
+    return render(request, 'index', BASE_CONTEXT(request))
 
 def logout_user(request):
     logout(request)

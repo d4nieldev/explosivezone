@@ -35,7 +35,9 @@
             </a>
             <ul class="lisst-unstyled components">
                 {{ menu_data|safe }}
-                <li><a class='add-option d-none'>הוספה</a></li>
+                {% if is_admin %}
+                <li><button type="button" id="add-options" data-bs-toggle="modal" data-bs-target="#addOptionModal" aria-hidden="true">הוספה</button></li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -78,6 +80,8 @@
         {% include 'modals/login.html' %}
 
         {% include 'modals/register.html' %}
+
+        {% include 'modals/add_option.html' %}
     </div>
 
     {% if showRegister %}
