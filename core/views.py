@@ -86,21 +86,28 @@ def show_exercise(request, exercise_title):
     return render(request, 'exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
 @csrf_exempt
-def create_exercise(request):
-    title = request.POST.get('title')
-    youtube_code = request.POST.get('youtube_code')
-    exercises = request.POST.get('exercises')
-    remarks = request.POST.get('remarks')
-    print(title)
+def create_exercise(request, exercise_title):
+    exercise_title = exercise_title.replace('_', ' ')
+    context = { 
+        'exercise_title': exercise_title,
+    }
 
-    Exercise(
-        menu_option=MenuOption.objects.get(title=title),
-        youtube_code=youtube_code,
-        exercises=exercises,
-        remarks=remarks,
-    ).save()
+    if request.method == "POST":
+        if "create-workout" in request.POST:
+            youtube_code = request.POST.get('txt-youtube-code')
+            exercises = request.POST.get('txt-excercises')
+            remarks = request.POST.get('txt-remarks')
 
-    return HttpResponse("success")
+            Exercise(
+                menu_option=MenuOption.objects.get(title=exercise_title),
+                youtube_code=youtube_code,
+                exercises=exercises,
+                remarks=remarks,
+            ).save()
+
+            return show_exercise(request, exercise_title)
+    
+    return render(request, 'add_exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
 @csrf_exempt
 def create_menu_option(request):
@@ -125,4 +132,4 @@ def favorites(request):
     context = {
 
     }
-    return render(request, 'favorites.html', concatenate_dicts(context, BASE_CONTEXT(request)))
+    return render(request, 'favorites.html', BASE_CONTEXT(request))

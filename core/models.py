@@ -35,7 +35,7 @@ class MenuOption(models.Model):
     def get_html(self, admin_view):
         children = self.get_children()
         children_html = ''.join([child.get_html(admin_view) for child in children])
-        title = str(self.title).replace(' ', '')
+        title = str(self.title).replace(' ', '_')
         base_html = HtmlTag(
             'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title)
         )
@@ -65,7 +65,7 @@ class MenuOption(models.Model):
             if admin_view:
                 base_html = HtmlTag(
                 'li', 
-                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
+                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'data-new':'true', 'class': 'exercise'}, self.title + 
                             str(HtmlTag('a', {'class': 'add-page'}, content="<i class='fas fa-plus'></i>"))
                         )
                 )

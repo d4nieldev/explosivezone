@@ -18,12 +18,21 @@ $(document).ready(function(){
 
     // send to relevant page
     $("button.exercise").on("click", function(){
-        window.location.href = '/' + $(this).data('sendto') + '/'
+        if ($(this).data('new')){
+            window.location.href = '/אימון חדש/' + $(this).data('sendto') + '/'
+        }
+        else{
+            window.location.href = '/' + $(this).data('sendto') + '/'
+        }
     });
 
     // active class on collapsers
     $("#sidebarCollapse").on('click', function(){
         $("#sidebar").toggleClass('active');
+    });
+    $("li.active button").on('click', function(){
+        console.log($(this).parent());
+        $(this).parent().toggleClass('active');
     });
 
 
@@ -51,19 +60,6 @@ $(document).ready(function(){
 
             })
         }
-    });
-    
-    $("#sidebar>.components button").on('click', function(){
-        current_level = $(this).parent().parents().length
-        original_element = $(this);
-
-        $("li.active").each(function(){
-            if ($(this).parents().length >= current_level && $(this).children('button')[0] != original_element[0]){
-                // link already opened in the same level
-                collapseOption($(this));
-            }
-        });
-        $(this).parent().toggleClass("active");
     });
 
     $("#exercise-template").on("submit", function(){
