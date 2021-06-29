@@ -248,3 +248,7 @@ ul ul button {
   color: white;
   width: 20rem;
 }
+
+.text-red{
+  color: var(--secondary-color);
+}

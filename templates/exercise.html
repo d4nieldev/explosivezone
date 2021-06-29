@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}ExplosiveArea | {{ exercise.menu_option.title }} {% endblock %}
+{% block content %}
+<!--Exercise Container-->
+<div id="exercise-container">
+    <h1 id="exercise-title">
+        {{ exercise.menu_option.title }}
+    </h1>
+    <div id="exercise-content">
+        <ul>
+            {% for ex in exercise_list %}
+            <li>{{ ex }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <h4 id="remarks-h4">הערות</h4>
+    <div id="exercise-remarks">
+        {{ exercise.remarks }}
+    </div>
+    <h4 class="video-h4">סרטון</h4>
+    <div id="exercise-video" class="ratio ratio-16x9 p-1">
+        <iframe src="{{ exercise.get_youtube_embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script>
+    /* Show hierarchy on page load */
+    $(document).ready(function(){
+        exercise_title = $("#exercise-title").text().trim();
+        $("#sidebar .exercise").each(function(){
+            if (exercise_title == $(this).text()){
+                $(this).parentsUntil('.components').each(function(){
+                    $(this).addClass('active');
+                    if ($(this).children('button').hasClass('dropdown-toggle')){
+                        $(this).children('button').attr('aria-expanded', 'true');
+                        $(this).children('button').addClass('collapsed');
+                        $(this).children('ul').addClass('show');
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

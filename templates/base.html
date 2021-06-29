@@ -13,13 +13,21 @@
     <!--cdnjs Font Awsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--My style-->
+    <!--My css & js-->
+    {% if debug %}
+    <!--Prevent css & js from caching on debug-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U' %}" />
+    <script src="{% static 'js/script.js' %}?{% now 'U' %}"></script>
+    {% else %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <!--My script-->
     <script src="{% static 'js/script.js' %}"></script>
+    {% endif %}
+    
     <title>{% block title %}ExplosiveArea{% endblock %}</title>
 </head>
 <body onload="">
+    <span id="is_admin" class="d-none">{{ is_admin }}</span>
+    
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
@@ -27,6 +35,7 @@
             </div>
             <ul class="lisst-unstyled components">
                 {{ menu_data|safe }}
+                <li><a class='add-option d-none'>הוספה</a></li>
             </ul>
         </nav>
 
@@ -43,13 +52,16 @@
                 <div class="user-info">
                     <div class="row">
                         <div class="col-3">
-                            <a href="#"><i class="fas fa-star fa-3x" title='אימונים מועדפים'></i></a>
+                            <a href="{% url 'favorites' %}"><i class="fas fa-star fa-3x text-red" title='אימונים מועדפים'></i></a>
                         </div>
                         <div class="col-9">
                             <div class="row">
-                                שלום, {{ user.username }}!
+                                שלום, {{ user.username }}! 
+                                {% if is_admin %}
+                                <i class="fas fa-crown p-0 me-2 text-warning" title="את/ה מנהל"></i>
+                                {% endif %}
                             </div>
-                            <div class="row"><a href="/logout" class='link-danger'>התנתק</a></div>
+                            <div class="row"><a href="{% url 'logout' %}" class='link-danger'>התנתק</a></div>
                         </div>
                     </div>
                     

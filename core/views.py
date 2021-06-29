@@ -3,19 +3,33 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from core.forms import UserForm
 
 from core.models import MenuOption, Exercise
 
 
+def BASE_CONTEXT(request):
+    return dict({
+        'menu_data': str(MenuOption.get_root_options_html(request.user.is_superuser)),
+        'is_admin': request.user.is_superuser,
+        'debug': settings.DEBUG,
+    })
+
+def concatenate_dicts(dict1, dict2):
+    for key, value in dict2.items():
+        dict1[key] = value
+    
+    return dict1
+
 def index(request):
     def log_user(username, password):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            print("exist")
-            return redirect('index')
+            return redirect('favorites')
         else:
             # user does not exist
             pass
@@ -50,29 +64,26 @@ def index(request):
                 showRegister = True
 
     context = {
-        'menu_data': str(MenuOption.get_root_options_html()),
-        'is_admin': request.user.is_superuser,
         'user_creation_form': form,
         'errors': errors,
         'showLogin': showLogin,
         'showRegister': showRegister
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'index.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
 @csrf_exempt
-def show_exercise(request):
-    title = request.POST.get('exercise_title')
-    print(request.POST)
-    ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=title))
-    obj = {
-        'title': ex.menu_option.title,
-        'youtube_link': ex.get_youtube_embed(),
-        'exercise_list': ex.get_exercise_list(),
-        'remarks': ex.remarks
+def show_exercise(request, exercise_title):
+    print(exercise_title)
+    ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
+    exercise_list = [s for s in str(ex.exercises).splitlines()]
+
+    context = {
+        "exercise": ex,
+        "exercise_list": exercise_list
     }
 
-    return JsonResponse(obj)
+    return render(request, 'exercise.html', concatenate_dicts(context, BASE_CONTEXT(request)))
 
 @csrf_exempt
 def create_exercise(request):
@@ -108,3 +119,10 @@ def logout_user(request):
     logout(request)
 
     return redirect('index')
+
+@login_required(login_url='index')
+def favorites(request):
+    context = {
+
+    }
+    return render(request, 'favorites.html', concatenate_dicts(context, BASE_CONTEXT(request)))

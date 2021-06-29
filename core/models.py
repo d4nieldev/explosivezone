@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 
 from core.html_builder import HtmlTag
 
@@ -9,13 +10,13 @@ class MenuOption(models.Model):
     title = models.CharField(max_length=50, unique=True)
 
     @staticmethod
-    def get_root_options_html():
+    def get_root_options_html(admin_view):
         all_options = MenuOption.objects.all()
         root_options_html = ""
 
         for opt in all_options:
             if not opt.parent:
-                root_options_html += opt.get_html()
+                root_options_html += opt.get_html(admin_view)
         
         return root_options_html
 
@@ -31,9 +32,9 @@ class MenuOption(models.Model):
         return children
     
 
-    def get_html(self):
+    def get_html(self, admin_view):
         children = self.get_children()
-        children_html = ''.join([child.get_html() for child in children])
+        children_html = ''.join([child.get_html(admin_view) for child in children])
         title = str(self.title).replace(' ', '')
         base_html = HtmlTag(
             'li', content=HtmlTag('button', {'type': 'button', 'data-sendTo': self.title, 'class': 'exercise'}, self.title)
@@ -61,12 +62,15 @@ class MenuOption(models.Model):
         try:
             exercise = Exercise.objects.get(menu_option=self)
         except ObjectDoesNotExist:
-            base_html = HtmlTag(
-            'li', 
-            content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
-                        str(HtmlTag('a', {'class': 'add-page d-none'}, content="<i class='fas fa-plus'></i>"))
-                    )
-            )
+            if admin_view:
+                base_html = HtmlTag(
+                'li', 
+                content=HtmlTag('button', {'type': 'button', 'data-sendTo': title, 'class': 'exercise'}, self.title + 
+                            str(HtmlTag('a', {'class': 'add-page'}, content="<i class='fas fa-plus'></i>"))
+                        )
+                )
+            else:
+                base_html = ''
         return str(base_html)
     
 
@@ -82,6 +86,7 @@ class Exercise(models.Model):
     exercises = models.TextField()
     remarks = models.TextField()
 
+    @property
     def get_youtube_embed(self):
         return "https://www.youtube.com/embed/" + self.youtube_code
 
@@ -93,3 +98,10 @@ class Exercise(models.Model):
 
     def __str__(self):
         return self.menu_option.title
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'[{self.user}] ★ {self.exercise}'

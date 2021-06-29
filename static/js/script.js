@@ -1,15 +1,5 @@
-function collapseOption(element){
-    $(element).removeClass('active');
-    if ($(element).children('button').hasClass('dropdown-toggle')){
-        $(element).children('button').attr('aria-expanded', 'false');
-        $(element).children('button').addClass('collapsed');
-        $(element).children('ul').removeClass('show');
-    }
-}
-
 $(document).ready(function(){
-    $("#sidebar ul").append("<li><a class='add-option d-none'>הוספה</a></li>");
-
+    // login / register
     translation_dict = {
         'A user with that username already exists.': 'שם המשתמש כבר קיים',
         'This password is too short. It must contain at least 8 characters.': 'הסיסמא צריכה להכיל לפחות 8 תווים',
@@ -24,66 +14,20 @@ $(document).ready(function(){
         console.log($(this).text())
         new_errors.push(translation_dict[$(this).text()])
     });
-    console.log(new_errors);
     new_errors.forEach((item) => $("#registerErrors").append("<li>" + item +"</li>"));
-    
-    if ($("#is_admin").html() == "True"){
-        $("a.add-page").removeClass('d-none');
-        $("a.add-option").removeClass('d-none');
-    }
-    else{
-        $("a.add-page").addClass('d-none');
-        $("a.add-option").addClass('d-none');
-    }
 
+    // send to relevant page
     $("button.exercise").on("click", function(){
-        $.ajax({
-            url: '/show_exercise',
-            method: 'POST',
-            data: {
-                exercise_title: $(this).data('sendto'),
-            },
-            success: function(data){
-                $("#exercise-title").html(data.title);
-
-                $("#exercise-video").html('<iframe src="' + data.youtube_link + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
-
-                exercises_html = "";
-                data.exercise_list.forEach(exercise => {
-                    exercises_html += "<li>" + exercise + "</li>"
-                });
-                $("#exercise-content>ul").html(exercises_html);
-
-                $("#exercise-remarks").html(data.remarks);
-                $("#exercise-container").removeClass('d-none');
-                $("#homepage-container").addClass('d-none');
-                $("#exercise-template-container").addClass('d-none');
-            }
-        })
+        window.location.href = '/' + $(this).data('sendto') + '/'
     });
 
-    $(".sidebar-header>h3").on("click", function(){
-        $("#homepage-container").removeClass('d-none');
-        $("#exercise-container").addClass('d-none');
-        $("#exercise-template-container").addClass('d-none');
-
-        $("li.active").each(function(){
-            collapseOption($(this));
-        });
-    });
-
-    $("a.add-page").on("click", function(){
-        $("#template-title").html($(this).parent('button').text());
-
-        $("#exercise-template-container").removeClass('d-none');
-        $("#homepage-container").addClass('d-none');
-        $("#exercise-container").addClass('d-none');
-    });
-
+    // active class on collapsers
     $("#sidebarCollapse").on('click', function(){
         $("#sidebar").toggleClass('active');
     });
 
+
+    // Adding options
     $(document).on('dblclick', 'a.add-option', function(){
         $(this).parent().html("<input id='txt-add-option' type='text' class='bg-transparent form-control text-white' style='font-size: 1.1rem' />");
         $("#txt-add-option").trigger('focus');
