@@ -1,4 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% if debug %}
+<script src="{% static 'js/exercise.js' %}?{% now 'U' %}"></script>
+{% else %}
+<script src="{% static 'js/exercise.js' %}"></script>
+{% endif %}
+
+{% endblock %}
 {% block title %}ExplosiveArea | {{ exercise.menu_option.title }} {% endblock %}
 {% block content %}
 <!--Exercise Container-->
@@ -8,7 +18,7 @@
 <div id="exercise-container">
     <h1 id="exercise-title" class="title">
         {{ exercise.menu_option.title }}
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and not is_admin %}
         <button id="toggle_fav" type="button" class="btn p-0">
             {% if is_user_fav %}
             <i class="fas fa-star fa-2x text-warning"></i>

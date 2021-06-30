@@ -18,7 +18,6 @@ def BASE_CONTEXT(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('favorites')
         else:
             # user does not exist
             return 'user_not_exist'

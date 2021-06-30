@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <script src="{% static 'js/script.js' %}"></script>
     {% endif %}
+    {% block head %}
+    {% endblock %}
     
     <title>{% block title %}ExplosiveArea{% endblock %}</title>
 </head>

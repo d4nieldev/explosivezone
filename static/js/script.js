@@ -1,5 +1,8 @@
 function set_active(current_page_title){
-
+    /**
+     * make red background for selected items on page load
+     */
+    
     $(".components li>button.exercise").each(function(){
         if ($(this).text().trim() == current_page_title){
             $(this).parentsUntil('ul.components').each(function(){
@@ -16,6 +19,16 @@ function set_active(current_page_title){
 
 $(document).ready( function(){
     set_active($("#exercise-title").text().trim());
+    // page navigation
+    $("button.exercise").on("click", function(){
+        if ($(this).data('new')){
+            window.location.href = '/אימון חדש/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
+        }
+        else{
+            window.location.href = '/אימון/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
+        }
+    });
+
     // login / register
     translation_dict = {
         'A user with that username already exists.': 'שם המשתמש כבר קיים',
@@ -34,33 +47,14 @@ $(document).ready( function(){
     });
     new_errors.forEach((item) => $("#registerErrors").append("<li>" + item +"</li>"));
 
-    // send to relevant page
-    $("button.exercise").on("click", function(){
-        if ($(this).data('new')){
-            window.location.href = '/אימון חדש/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
-        }
-        else{
-            window.location.href = '/אימון/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
-        }
-    });
-
-    // active class on collapsers
+    // open and close sidebar
     $("#sidebarCollapse").on('click', function(){
         $("#sidebar").toggleClass('active');
     });
-    $("li.active button").on('click', function(){
-        console.log($(this).parent());
-        $(this).parent().toggleClass('active');
-    });
 
+    // toggle active class on buttons 
     $(".components li button").on("click", function(){
         $(this).parent().toggleClass("active");
-    });
-
-
-    // Adding options
-    $("#add-options").on('dblclick', function(){
-        console.log("clicked add");
     });
 
     // submit new exercise
@@ -75,26 +69,7 @@ $(document).ready( function(){
                 remarks: $("#txt-remarks").val()
             }, 
             success: function(response){
-                alert(response);
-            }
-        })
-    });
-
-    // toggle fav icon
-    $("#toggle_fav").on("click", function(){
-        $.ajax({
-            method: 'POST',
-            url: '/fav',
-            data: {
-                title: $("#exercise-title").text().trim()
-            }, 
-            success: function(){
-                // title star color change
-                $("#toggle_fav").find('svg').toggleClass('text-secondary');
-                $("#toggle_fav").find('svg').toggleClass('text-warning');
-
-                // star show / hide from menu
-                $("button.exercise[data-sendto='" + $("#exercise-title").text().trim() + "']").find('svg').toggleClass("d-none")
+                console.log(response);
             }
         })
     });
@@ -104,6 +79,7 @@ $(document).ready( function(){
         $(this).parent().parent().find("form").find("input[type='text'], input[type='password'], input[type='email']").val("");
     })
 
+    // delete menu options
     $("a[data-del]").on("click", function(e){
         e.stopPropagation();
         menuOptionId = $(this).data('del');
