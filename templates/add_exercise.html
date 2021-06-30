@@ -8,10 +8,9 @@
     </h1>
     <form id="exercise-template" method="POST">
         {% csrf_token %}
-        <input id="txt-youtube-code" name="txt-youtube-code" placeholder="קוד יוטיוב" type="text" maxlength="11" class="form-control mb-2" style="width: 11rem;" />
-        <textarea id="txt-excercises" name="txt-excercises" placeholder="תרגילים מופרדים באמצעות שורות" rows="10" class="form-control mb-2"></textarea>
-        <textarea id='txt-remarks' name='txt-remarks' placeholder="הערות" rows="5" class="form-control mb-2"></textarea>
-        <button name="create-workout" type="submit" class="btn btn-secondary">יצירת אימון</button>
+        {{ exercise_form.media }}
+        {{ exercise_form.as_p }}
+        <button name="create-workout" type="submit" class="btn btn-primary">הוסף אימון</button>
     </form>
 </div>  
 {% endblock %}

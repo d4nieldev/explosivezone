@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from core.html_builder import HtmlTag
 
+from ckeditor.fields import RichTextField
+
 class MenuOption(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=50, unique=True)
@@ -47,15 +49,15 @@ class MenuOption(models.Model):
         if is_fav:
             base_html = f"""
             <li>
-                <button type='button' data-sendto='{self.title} class='exercise'>
-                    {self.title}<i class='fas fa-star text-warning fa-2x></i>
+                <button type='button' data-sendto='{self.title}' class='exercise'>
+                    {self.title}<i class='fas fa-star text-warning fa-2x'></i>
                 </button>
             </li>
             """
         else:
             base_html = f"""
             <li>
-                <button type='button' data-sendto='{self.title} class='exercise'>
+                <button type='button' data-sendto='{self.title}' class='exercise'>
                     {self.title}<i class='fas fa-star text-warning fa-2x d-none'></i>
                 </button>
             </li>
@@ -114,19 +116,8 @@ class MenuOption(models.Model):
 
 class Exercise(models.Model):
     menu_option = models.ForeignKey(MenuOption, on_delete=models.CASCADE)
-    youtube_code = models.CharField(max_length=150)
-    exercises = models.TextField()
-    remarks = models.TextField()
-
-    @property
-    def get_youtube_embed(self):
-        return "https://www.youtube.com/embed/" + self.youtube_code
-
-    def get_exercise_list(self):
-        lst = str(self.exercises).splitlines()
-        lst = [s for s in lst if s != ""]
-            
-        return lst
+    description = RichTextField(blank=True, null=True, config_name="awesome_ckeditor")
+    video_code = models.CharField(max_length=15, default='')
 
     def __str__(self):
         return self.menu_option.title

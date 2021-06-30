@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).on('ready', function(){
     // login / register
     translation_dict = {
         'A user with that username already exists.': 'שם המשתמש כבר קיים',
@@ -7,7 +7,8 @@ $(document).ready(function(){
         'This password is entirely numeric.': 'הסיסמא לא יכולה להיות מורכבת רק מספרות',
         'The two password fields didn’t match.': 'הסיסמאות לא מתאימות',
         'Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.': 'שם המשתמש לא תקין. שם משתמש תקין מכיל אותיות, מספרים ואת התווים הבאים: @.+-_',
-        'The password is too similar to the username.': 'הסיסמא דומה מדי לשם המשתמש'
+        'The password is too similar to the username.': 'הסיסמא דומה מדי לשם המשתמש',
+        'The password is too similar to the email address.': 'הסיסמא דומה מדי לאימייל'
     }
     var new_errors = []
     $("ul.errorlist>li>ul.errorlist>li").each(function(){
@@ -22,7 +23,7 @@ $(document).ready(function(){
             window.location.href = '/אימון חדש/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
         }
         else{
-            window.location.href = '/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
+            window.location.href = '/אימון/' + $(this).data('sendto').replaceAll('_', ' ') + '/'
         }
     });
 
@@ -33,6 +34,10 @@ $(document).ready(function(){
     $("li.active button").on('click', function(){
         console.log($(this).parent());
         $(this).parent().toggleClass('active');
+    });
+
+    $(".components li button").on("click", function(){
+        $(this).parent().toggleClass("active");
     });
 
 
@@ -97,7 +102,4 @@ $(document).ready(function(){
             }
         })
     });
-
-    
-    
 });

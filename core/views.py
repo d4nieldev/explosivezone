@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AnonymousUser
 
-from core.forms import UserForm, MenuOptionForm
+from core.forms import UserForm, MenuOptionForm, ExerciseForm
 
 from core.models import MenuOption, Exercise, Favorite
 
@@ -86,9 +86,7 @@ def index(request):
 
 @csrf_exempt
 def show_exercise(request, exercise_title):
-    print(exercise_title)
     ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
-    exercise_list = [s for s in str(ex.exercises).splitlines()]
 
     try:
         if not isinstance(request.user, AnonymousUser):
@@ -101,7 +99,6 @@ def show_exercise(request, exercise_title):
 
     context = {
         "exercise": ex,
-        "exercise_list": exercise_list,
         "is_user_fav": is_user_fav
     }
 
@@ -111,22 +108,21 @@ def show_exercise(request, exercise_title):
 @csrf_exempt
 def create_exercise(request, exercise_title):
     exercise_title = exercise_title.replace('_', ' ')
+        
     context = { 
         'exercise_title': exercise_title,
+        'exercise_form': ExerciseForm()
     }
 
     if request.method == "POST":
         if "create-workout" in request.POST:
-            youtube_code = request.POST.get('txt-youtube-code')
-            exercises = request.POST.get('txt-excercises')
-            remarks = request.POST.get('txt-remarks')
-
-            Exercise(
-                menu_option=MenuOption.objects.get(title=exercise_title),
-                youtube_code=youtube_code,
-                exercises=exercises,
-                remarks=remarks,
-            ).save()
+            exercise = Exercise(
+                menu_option=MenuOption.objects.get(title=exercise_title), 
+                description=request.POST['description'],
+                video_code=request.POST['video_code']
+            )
+            
+            exercise.save()
 
             return show_exercise(request, exercise_title)
     

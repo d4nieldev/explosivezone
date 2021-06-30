@@ -328,3 +328,7 @@ ul ul button {
 .login-error svg{
   margin-left: 1rem;
 }
+
+span.cke_top.cke_reset_all.cke_mixed_dir_content{
+  align-items: center;
+}

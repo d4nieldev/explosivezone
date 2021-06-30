@@ -8,6 +8,7 @@
 <div id="exercise-container">
     <h1 id="exercise-title" class="title">
         {{ exercise.menu_option.title }}
+        {% if user.is_authenticated %}
         <button id="toggle_fav" type="button" class="btn p-0">
             {% if is_user_fav %}
             <i class="fas fa-star fa-2x text-warning"></i>
@@ -15,21 +16,13 @@
             <i class="fas fa-star fa-2x text-secondary"></i>
             {% endif %}
         </button>
+        {% endif %}
     </h1>
     <div id="exercise-content">
-        <ul>
-            {% for ex in exercise_list %}
-            <li>{{ ex }}</li>
-            {% endfor %}
-        </ul>
+        {{ exercise.description|safe }}
     </div>
-    <h4 id="remarks-h4">הערות</h4>
-    <div id="exercise-remarks">
-        {{ exercise.remarks }}
-    </div>
-    <h4 class="video-h4">סרטון</h4>
-    <div id="exercise-video" class="ratio ratio-16x9 p-1">
-        <iframe src="{{ exercise.get_youtube_embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div id="exercise-video" class="ratio ratio-16x9">
+        <iframe src="https://www.youtube.com/embed/{{ exercise.video_code }}" allowfullscreen></iframe>
     </div>
 </div>
 
@@ -37,7 +30,7 @@
     /* Show hierarchy on page load */
     $(document).ready(function(){
         exercise_title = $("#exercise-title").text().trim();
-        $("#sidebar .exercise").each(function(){
+        $("#sidebar.exercise").each(function(){
             if (exercise_title == $(this).text()){
                 $(this).parentsUntil('.components').each(function(){
                     $(this).addClass('active');

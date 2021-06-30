@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from core.models import MenuOption
+from core.models import MenuOption, Exercise
 
 
 class UserForm(UserCreationForm):
@@ -24,4 +24,13 @@ class MenuOptionForm(forms.ModelForm):
         widgets = {
             'parent': forms.Select(attrs={'class': 'form-control mb-1'}, choices=[(m, m) for m in MenuOption.objects.all()]),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'כותרת'})
+        }
+
+class ExerciseForm(forms.ModelForm):
+    class Meta:
+        model = Exercise
+        fields = ('description', 'video_code',)
+        widgets = {
+            'description': forms.Textarea(),
+            'video_code': forms.TextInput(attrs={'class': 'form-control', 'style': 'width: 15rem;'})
         }
