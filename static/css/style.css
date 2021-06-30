@@ -87,7 +87,8 @@ a:focus {
 button[aria-expanded="true"] {
   color: #fff;
   background: var(--secondary-color);
-  border-top: 1px dashed var(--primary-color);
+  border-right: 1px solid white;
+  box-sizing: border-box;
 }
 button[data-toggle="collapse"] {
   position: relative;

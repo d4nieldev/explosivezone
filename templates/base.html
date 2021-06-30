@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,18 +52,23 @@
                 {% else %}
                 <div class="user-info">
                     <div class="row">
-                        <div class="col-3">
-                            <a href="{% url 'favorites' %}"><i class="fas fa-star fa-3x text-red" title='אימונים מועדפים'></i></a>
+                        
+                        <div class="col-3 ms-1">
+                            {% if not is_admin %}
+                            <a href="{% url 'favorites' %}"><i class="fas fa-star fa-3x text-warning" title='אימונים מועדפים'></i></a>
+                            {% else %}
+                            <a href="/admin"><i class="fas fa-crown fa-3x text-warning ms" title="לדף מנהל"></i></a>
+                            
+                            {% endif %}
                         </div>
-                        <div class="col-9">
+                        
+                        <div class="col">
                             <div class="row">
                                 שלום, {{ user.username }}! 
-                                {% if is_admin %}
-                                <i class="fas fa-crown p-0 me-2 text-warning" title="את/ה מנהל"></i>
-                                {% endif %}
                             </div>
                             <div class="row"><a href="{% url 'logout' %}" class='link-danger'>התנתק</a></div>
                         </div>
+                        
                     </div>
                     
                 </div>

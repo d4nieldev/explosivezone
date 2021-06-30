@@ -1,4 +1,21 @@
-$(document).on('ready', function(){
+function set_active(current_page_title){
+
+    $(".components li>button.exercise").each(function(){
+        if ($(this).text().trim() == current_page_title){
+            $(this).parentsUntil('ul.components').each(function(){
+                $(this).addClass('active');
+                if ($(this).find('button').hasClass('dropdown-toggle')){
+                    $(this).find('button').attr("aria-expanded", 'true');
+                    $(this).find('button').removeClass('collapsed');
+                    $(this).find('ul').addClass('show');
+                }
+            });
+        }
+    });
+}
+
+$(document).ready( function(){
+    set_active($("#exercise-title").text().trim());
     // login / register
     translation_dict = {
         'A user with that username already exists.': 'שם המשתמש כבר קיים',

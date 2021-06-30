@@ -91,6 +91,8 @@ class MenuOption(models.Model):
                     
                 </li>
                 """
+            else:
+                base_html = ''
         else:
             if admin_view:
                 base_html = f"""
