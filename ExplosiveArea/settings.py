@@ -80,18 +80,15 @@ WSGI_APPLICATION = 'ExplosiveArea.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'explosive_zone',
-#         'USER': 'postgres',
-#         'PASSWORD': str(os.environ.get('POSTGRESQL_PASSWORD')),
-#         'HOST': 'localhost',
-#         'PORT': '5433',
-#     }
-# }
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'explosive_zone',
+        'USER': 'postgres',
+        'PASSWORD': str(os.environ.get('POSTGRESQL_PASSWORD')),
+        'HOST': 'localhost',
+        'PORT': '5433',
+    }
 }
    
 
