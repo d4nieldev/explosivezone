@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import django_heroku
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,28 +80,20 @@ WSGI_APPLICATION = 'ExplosiveArea.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'explosive_zone',
-            'USER': 'postgres',
-            'PASSWORD': str(os.environ.get('POSTGRESQL_PASSWORD')),
-            'HOST': 'localhost',
-            'PORT': '5433',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'postgresql-fitted-31314',
-            'USER': 'huojacnjqbhcge',
-            'PASSWORD': "ba1e46127fe1237a2e13ac195fdbeb10ae036b7119bab5f1630260bbd5f0e435",
-            'HOST': 'ec2-54-74-35-87.eu-west-1.compute.amazonaws.com',
-            'PORT': '5432',
-        }
-    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'explosive_zone',
+#         'USER': 'postgres',
+#         'PASSWORD': str(os.environ.get('POSTGRESQL_PASSWORD')),
+#         'HOST': 'localhost',
+#         'PORT': '5433',
+#     }
+# }
+DATABASES = {
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
+}
+   
 
 
 # Password validation
