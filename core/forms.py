@@ -22,7 +22,7 @@ class MenuOptionForm(forms.ModelForm):
         model = MenuOption
         fields = ('parent', 'title')
         widgets = {
-            'parent': forms.Select(attrs={'class': 'form-control mb-1'}, choices=["1","2","3"]),
+            'parent': forms.Select(attrs={'class': 'form-control mb-1'}, choices=[(m, m) for m in MenuOption.objects.all()]),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'כותרת'})
         }
 
