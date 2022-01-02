@@ -165,6 +165,7 @@ def create_menu_option(request):
         parent = None
     else:
         parent = MenuOption.objects.get(title=parent_title)
+
     title = request.POST.get('title')
 
     MenuOption(parent=parent, title=title).save()
