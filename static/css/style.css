@@ -43,7 +43,7 @@ a:focus {
 #sidebar>.sidebar-header {
   position: fixed;
   width: min(25rem, 100vw);
-  font-family: Helvetica;
+  font-family: Helvetica, serif;
   padding: 2rem;
   background: var(--title-color);
 }
@@ -123,7 +123,7 @@ ul ul button {
 .topbar{
   background-color: var(--title-color);
   padding: 1.575rem 0;
-  font-family: Helvetica;
+  font-family: Helvetica, serif;
   width: 100%;
   transition: 0.3s;
 }
@@ -168,7 +168,7 @@ ul ul button {
 
 .title{
   text-align: center;
-  font-family: ValeraRound;
+  font-family: ValeraRound, serif;
   color: var(--primary-color);
   border-bottom: 1px solid var(--primary-color);
 }
@@ -220,7 +220,7 @@ ul ul button {
 
 .link-red{
   color: var(--secondary-color);
-  background-color: none;
+  background-color: transparent;
   padding: 0;
   vertical-align: baseline;
 }
@@ -246,7 +246,7 @@ ul ul button {
 }
 
 .user-info {
-  font-family: Tahoma;
+  font-family: Tahoma, serif;
   background-color: var(--primary-color);
   position: absolute;
   left: 0;
@@ -273,17 +273,16 @@ ul ul button {
   font-size: 1.5rem;
   padding: 1.5rem;
   height: 100%;
-  font-family: Tahoma;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
   text-align: center;
-  font-family: ValeraRound;
+  font-family: ValeraRound, serif;
 }
 .fav-box p{
   margin: 0;
-  padding: 0.5rem 0rem;
+  padding: 0.5rem 0;
 }
 .fav-box:hover{
   background-color: var(--primary-color);
@@ -324,7 +323,7 @@ ul ul button {
 .login-error{
   padding: 1rem;
   background: var(--secondary-color);
-  margin: 0rem 1rem 1rem 1rem;
+  margin: 0 1rem 1rem 1rem;
 }
 .login-error svg{
   margin-left: 1rem;
