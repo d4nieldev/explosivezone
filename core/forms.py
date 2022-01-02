@@ -1,8 +1,11 @@
+import django.db.utils
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 from core.models import MenuOption, Exercise
+
+import logging
 
 
 class UserForm(UserCreationForm):
@@ -35,15 +38,20 @@ class MenuOptionForm(forms.ModelForm):
     select field to select which category will be the parent of the new one.
     text input field for the title of the new category.
     """
-    class Meta:
-        model = MenuOption
-        fields = ('parent', 'title')
-        widgets = {
-            'parent': forms.Select(
-                attrs={'class': 'form-control mb-1'}, choices=[(m, m) for m in MenuOption.objects.all()]),
-            'title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'כותרת'})
-        }
+    try:
+        class Meta:
+            model = MenuOption
+            fields = ('parent', 'title')
+            widgets = {
+                'parent': forms.Select(
+                    attrs={'class': 'form-control mb-1'}, choices=[(m, m) for m in MenuOption.objects.all()]),
+                'title': forms.TextInput(
+                    attrs={'class': 'form-control', 'placeholder': 'כותרת'})
+            }
+    except django.db.utils.ProgrammingError:
+        # if the migration is not built yet the error will be raised
+        # so we can ignore this part for the migration process to work
+        logging.debug("Skipped MenuOptionForm because MenuOption model does not exist!")
 
 
 class ExerciseForm(forms.ModelForm):

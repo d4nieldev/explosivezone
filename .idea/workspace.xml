@@ -7,17 +7,21 @@
     <list default="true" id="44b71e19-1d2d-4daa-bd6e-1aa0d34b3292" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/ExplosiveArea.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ExplosiveArea.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExplosiveArea/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExplosiveArea/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExplosiveArea/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExplosiveArea/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/html_builder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -32,11 +36,40 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ExplosiveArea/settings.py" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
+  </component>
+  <component name="RunManager">
+    <configuration name="run server" type="Python.DjangoServer" factoryName="Django server">
+      <module name="ExplosiveArea" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="EXPLOSIVEZONE_SECRET_KEY" value="django-insecure-^skt!_pq9bvafif9psy(t=s%^uwq0#u3$gcnlqf0dlw-mrk^*=" />
+        <env name="DJANGO_SETTINGS_MODULE" value="ExplosiveArea.settings" />
+        <env name="EXPLOSIVEZONE_DEBUG" value="true" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\danie\Documents\Github projects\explosivezone\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -46,7 +79,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1626358803304</updated>
-      <workItem from="1641048921194" duration="3385000" />
+      <workItem from="1641048921194" duration="3460000" />
+      <workItem from="1641132365433" duration="1242000" />
+      <workItem from="1641133630761" duration="985000" />
+      <workItem from="1641134646538" duration="2948000" />
+      <workItem from="1641137650393" duration="2355000" />
     </task>
     <servers />
   </component>
@@ -63,5 +100,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
