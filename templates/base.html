@@ -93,15 +93,17 @@
     {% if showRegister %}
     <script>
         $(document).ready(function(){
-            $("#registerModal").modal({ show: false });
-            $("#registerModal").modal('show');
+            const registerModal = $("#registerModal");
+            registerModal.modal({ show: false });
+            registerModal.modal('show');
         });
     </script>
     {% elif showLogin %}
     <script>
         $(document).ready(function(){
-            $("#loginModal").modal({ show: false });
-            $("#loginModal").modal('show');
+            const loginModal = $("#loginModal");
+            loginModal.modal({ show: false });
+            loginModal.modal('show');
         });
     </script>
     {% endif %}

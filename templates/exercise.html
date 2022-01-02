@@ -37,11 +37,11 @@
 </div>
 
 <script>
-    /* Show hierarchy on page load */
+    // Show hierarchy on page load
     $(document).ready(function(){
-        exercise_title = $("#exercise-title").text().trim();
+        const exercise_title = $("#exercise-title").text().trim();
         $("#sidebar.exercise").each(function(){
-            if (exercise_title == $(this).text()){
+            if (exercise_title === $(this).text()){
                 $(this).parentsUntil('.components').each(function(){
                     $(this).addClass('active');
                     if ($(this).children('button').hasClass('dropdown-toggle')){
