@@ -63,6 +63,7 @@ class MenuOption(models.Model):
                     is_fav = ''
                     break
 
+        # default button
         main_button = f"""
         <button type='button' data-sendto='{title}' class='exercise'>
             {self.title}<i class='fas fa-star text-warning fa-2x {is_fav}'></i>
@@ -70,6 +71,7 @@ class MenuOption(models.Model):
         """
 
         if len(children):
+            # show more complex button
             main_button = f"""
                 <button data-bs-target='#{title}Submenu' type='button' data-bs-toggle='collapse' aria-expanded='false' class='dropdown-toggle'>{self.title}</button>
                 <ul class='collapse list-unstyled' id='{title}Submenu'>
