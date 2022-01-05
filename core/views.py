@@ -100,16 +100,15 @@ def index(request):
 
 @csrf_exempt
 def show_exercise(request, exercise_title):
-    ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
+    try:
+        ex = Exercise.objects.get(menu_option=MenuOption.objects.get(title=exercise_title))
+    except ObjectDoesNotExist:
+        return create_exercise(request, exercise_title)
 
     # check if current exercise is a user favorite
-    try:
-        if not isinstance(request.user, AnonymousUser):
-            Favorite.objects.get(user=request.user, exercise=ex)
-    except ObjectDoesNotExist:
-        is_user_fav = False
-    else:
-        is_user_fav = True
+    is_user_fav = False
+    if not isinstance(request.user, AnonymousUser):
+        is_user_fav = Favorite.objects.filter(user=request.user, exercise=ex).count() > 0
 
     context = {
         "exercise": ex,
@@ -167,8 +166,8 @@ def create_menu_option(request):
         parent = MenuOption.objects.get(title=parent_title)
 
     title = request.POST.get('title')
-
-    MenuOption(parent=parent, title=title).save()
+    if MenuOption.objects.filter(title=title).count() == 0:
+        MenuOption(parent=parent, title=title).save()
 
     return render(request, 'index.html', BASE_CONTEXT(request))
 

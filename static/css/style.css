@@ -136,26 +136,6 @@ ul ul button {
   overflow-x: hidden;
 }
 
-.add-page{
-  position: absolute;
-  display: inline-block;
-  background-color: #0275d8;
-  color: #EEEBDD;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  left: 0;
-  top: 30%;
-  padding: 0.6rem 0.8rem;
-  margin: -0.6rem 0.4rem;
-  transition: 0.3s;
-}
-.add-page:hover{
-  background-color: white;
-  border: solid black 0.5px;
-  color: black;
-  transition: 0.3s;
-}
-
 #add-options{
   background-color: black!important;
 }
@@ -308,7 +288,7 @@ ul ul button {
   color: white;
   font-weight: 500;
   border-radius: 0.5rem;
-  left: 0;
+  left: 0rem;
   padding: 0.6rem 0.8rem;
   margin: -0.6rem 0.4rem;
   top: 30%;
@@ -318,6 +298,28 @@ ul ul button {
   background-color: var(--brighter-red);
   color: white;
   transition: ease 0.3s;
+}
+li[class="active"]>.remove-page{
+  top:10%;
+}
+.add-page{
+  position: absolute;
+  display: inline-block;
+  background-color: #0275d8;
+  color: #EEEBDD;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  left: 3rem;
+  top: 30%;
+  padding: 0.6rem 0.8rem;
+  margin: -0.6rem 0.4rem;
+  transition: 0.3s;
+}
+.add-page:hover{
+  background-color: white;
+  border: solid black 0.5px;
+  color: black;
+  transition: 0.3s;
 }
 
 .login-error{

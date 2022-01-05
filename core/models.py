@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from ckeditor.fields import RichTextField
 
+import core.models
+
 
 class MenuOption(models.Model):
     """
@@ -40,72 +42,48 @@ class MenuOption(models.Model):
         children_html = ''.join([child.get_html(admin_view, user_favs) for child in children])
         title = str(self.title).replace(' ', '_')
 
-        # if there are children create button as collapsable and add the children as it's options and return immediately
-        if len(children):
-            return f"""
-            <li>
-                <button data-bs-target='#{title}Submenu' type='button' data-bs-toggle='collapse' aria-expanded='false' 
-                        class='dropdown-toggle'>
-                    {self.title}
-                </button>
-                <ul class='collapse list-unstyled' id='{title}Submenu'>
-                    {children_html}
-                </ul>
-            </li>
-            """
+        remove_button = ''
+        add_button = ''
+        if admin_view:
+            remove_button = f"""<a data-del='{self.pk}' class='remove-page'>
+                            <center><i class='fas fa-trash'></i></center>
+                        </a>"""
+            if Exercise.objects.filter(menu_option=self).count() == 0 and len(children) == 0:
+                # does not have children and page not created
+                add_button = f"""
+                            <a class='add-page'>
+                                <i class='fas fa-plus'></i>
+                            </a>
+                        """
 
-        # there are no children - base case.
-        fav_addition = "d-none"
+        is_fav = 'd-none'
         if user_favs:
             for fav in user_favs:
                 if fav.exercise.menu_option.title == self.title:
-                    fav_addition = ""
+                    is_fav = ''
                     break
 
-        # create button for this menu option
-        base_html = f"""
-        <li>
-            <button type='button' data-sendto='{self.title}' class='exercise'>
-                {self.title}<i class='fas fa-star text-warning fa-2x {fav_addition}'></i>
-            </button>
-        </li>
+        main_button = f"""
+        <button type='button' data-sendto='{title}' class='exercise'>
+            {self.title}<i class='fas fa-star text-warning fa-2x {is_fav}'></i>
+        </button>
         """
 
-        try:
-            Exercise.objects.get(menu_option=self)  # try to get children
-        except ObjectDoesNotExist:  # no children
-            if admin_view:
-                # add delete button and add button at the end of each category.
-                base_html = f"""
-                <li>
-                    <button type='button' data-sendto='{title}' data-new='true' class='exercise'>
-                        {self.title}
-                    </button>
-                    <a data-del='{self.pk}' class='remove-page ms-5'>
-                        <center><i class='fas fa-trash'></i></center>
-                    </a>
-                    <a class='add-page'>
-                        <i class='fas fa-plus'></i>
-                    </a>
+        if len(children):
+            main_button = f"""
+                <button data-bs-target='#{title}Submenu' type='button' data-bs-toggle='collapse' aria-expanded='false' class='dropdown-toggle'>{self.title}</button>
+                <ul class='collapse list-unstyled' id='{title}Submenu'>
+                    {children_html}
+                </ul>
+            """
 
-                </li>
-                """
-            else:
-                base_html = ''
-        else:  # at least one child
-            if admin_view:
-                # add delete button (for whole category)
-                base_html = f"""
-                <li>
-                    <button type='button' data-sendto='{title}' class='exercise'>
-                        {self.title}
-                    </button>
-                    <a data-del='{self.pk}' class='remove-page'>
-                        <center><i class='fas fa-trash'></i></center>
-                    </a>
-                </li>
-                """
-
+        base_html = f"""
+                        <li>
+                            {add_button}
+                            {remove_button}
+                            {main_button}
+                        </li>
+                        """
         return base_html
 
     @staticmethod
