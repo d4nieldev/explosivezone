@@ -41,6 +41,7 @@ class MenuOption(models.Model):
         children = self.get_children()
         children_html = ''.join([child.get_html(admin_view, user_favs) for child in children])
         title = str(self.title).replace(' ', '_')
+        need_to_add = Exercise.objects.filter(menu_option=self).count() == 0 and len(children) == 0
 
         remove_button = ''
         add_button = ''
@@ -48,7 +49,7 @@ class MenuOption(models.Model):
             remove_button = f"""<a data-del='{self.pk}' class='remove-page'>
                             <center><i class='fas fa-trash'></i></center>
                         </a>"""
-            if Exercise.objects.filter(menu_option=self).count() == 0 and len(children) == 0:
+            if need_to_add:
                 # does not have children and page not created
                 add_button = f"""
                             <a class='add-page'>
@@ -69,9 +70,11 @@ class MenuOption(models.Model):
             {self.title}<i class='fas fa-star text-warning fa-2x {is_fav}'></i>
         </button>
         """
-
-        if len(children):
-            # show more complex button
+        if need_to_add and not admin_view:
+            # no exercise or children and not admin
+            main_button = ""
+        elif len(children):
+            # show more complex button if there are children
             main_button = f"""
                 <button data-bs-target='#{title}Submenu' type='button' data-bs-toggle='collapse' aria-expanded='false' class='dropdown-toggle'>{self.title}</button>
                 <ul class='collapse list-unstyled' id='{title}Submenu'>
@@ -79,14 +82,13 @@ class MenuOption(models.Model):
                 </ul>
             """
 
-        base_html = f"""
-                        <li>
-                            {add_button}
-                            {remove_button}
-                            {main_button}
-                        </li>
-                        """
-        return base_html
+        return f"""
+                <li>
+                    {add_button}
+                    {remove_button}
+                    {main_button}
+                </li>
+                """
 
     @staticmethod
     def get_root_options_html(admin_view, user_favs):
